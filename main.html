@@ -1,0 +1,123 @@
+<html style="overflow: scroll;width: 300px">
+<head>
+<!-- 最新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="js/jquery-2.1.0.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+<style type="text/css">
+     hr {   text-align: left;
+            margin-left:10px;
+            width: 70%;
+            size:2px;
+     }
+
+</style>
+
+</head>
+<body style="padding-top:42px;width:300px;word-wrap:break-word;">
+
+<div class="header ">
+    <ul class="nav nav-tabs navbar-fixed-top">
+        <li class="active"><a href="#gaishu" data-toggle="tab">概述</a></li>
+        <li class=""><a href="#setting" data-toggle="tab">设置</a></li>
+        <li class=""><a href="#introduction" data-toggle="tab">如何用</a></li>
+        <!-- <li class=""><a href="#">联系我</a></li> -->
+    </ul>
+</div>
+
+<div class="tab-content">
+    <div id="gaishu" class="tab-pane active">
+      <div class="jumbotron">
+        <h2>Update Checker</h2>
+        <p class="lead">定时检查某页面是否出现含有关键词的链接</p>
+        <button id="start" class="btn btn-lg btn-success" role="button">开始检查</button>
+        <button id="stop" class="btn btn-lg btn-warning" href="#" role="button" >停止检查</button>
+          <p></p>
+        <table >
+            <tr>
+                <td>运作状态 ：</td>
+                <td id="status"></td>
+            </tr>
+        </table>
+      </div>
+
+      <div class="row marketing" id="list">
+        <div class="col-lg-6">
+          <h4>匹配列表</h4>
+          <p>在指定页面中获得的符合对应关键词的链接</p>
+          <button class="btn btn-primary" id="claerMatch">全都知道了</button>
+          <br>
+          <br>
+          <ul id="matchList">
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="setting" class="tab-pane">
+        <div class="jumbotron">
+            <h4>在对应的网页那设置自己感兴趣的关键词</h4>
+            <p id="alertS" style="color: red"></p>
+        </div>
+        <div style="text-align: center">
+            <!--设置抓取时间间隔-->
+            <label for="time" >时间间隔</label>
+            <input id="time" type="text" pattern="[0-9]" class="form-control" value="" style="display: inline;width: 120px"/>
+            <label>分钟</label>
+            <!--<br><br>-->
+            <!--<input id="checkWhenOpen" type="checkbox" ><label for="checkWhenOpen" >一打开浏览器就开始检查</label>-->
+        </div>
+
+        <br>
+        <ul id="setKeyword">
+
+            <!--<li>-->
+                <!--<p>http://www.huihui.cnhttp://ww</p>-->
+                <!--<label>关键词</label>-->
+                <!--<input keeper="" placeholder="关键词以 ，分隔" />-->
+            <!--</li>-->
+        </ul>
+        <p id="setStatus" style="text-align: center"></p>
+        <div style="text-align: center">
+            <button id="set" class="btn btn-lg btn-success" align="right" >设置</button>
+        </div>
+        <br>
+    </div>
+
+    <div id="introduction" class="tab-pane">
+    <!-- talk about how to use-->
+        <div class="jumbotron">
+            <h4>图文并茂的说明书请移步 &darr;</h4>
+            <a href="http://jimhan.diandian.com/UpC_introduction" target="_blank">jimhan.diandian.com/UpC_introduction</a>
+        </div>
+
+        <h4>简易版的步骤说明</h4>
+        <ul>
+            <li>1:</li>
+
+        </ul>
+        <br/>
+
+    </div>
+</div>
+	<nav class="navbar navbar-inverse navbar-static-bottom" role="navigation" >
+      	<div class="footer" style="color:white;text-align:center;line-height:10px">
+      		<br/>
+        	<p>请发邮件告知我出了哪些问题</p>
+        	<p>rpchzhh@126.com</p>
+        	<p>&copy;JimHan 2014</p>
+      	</div>
+  	</nav>
+
+
+</body>
+
+</html>
