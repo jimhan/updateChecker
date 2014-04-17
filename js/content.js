@@ -10,101 +10,112 @@
 var urlKeeper = {};
 var count = 0;
 var pageUrl = window.location.href;
+var timer;
+var random;
 
 
+//document.addEventListener('DOMContentLoaded', function (){
+//
+//
+//
+//
+//
+//});
 
+chrome.extension.onRequest.addListener(function(dataI) {
 
-document.addEventListener('DOMContentLoaded', function (){
+    var data = JSON.parse(dataI);
 
-    if(localStorage.UpC_checkerCondition==undefined||localStorage.UpC_checkerCondition=="")
-    {
-        var data = {"pageUrl":pageUrl,"kind":"CHECK"}
-        chrome.extension.sendRequest(JSON.stringify(data));
-    }
-    else
+    if(data.kind=="CHECK_response")
     {
         //readyToCheck = true;
-        var data = JSON.parse(localStorage.UpC_checkerCondition);
         checkKeyword(data);
+        //localStorage.UpC_checkerCondition = data;
+
     }
+    else if(data.kind=="ANALYSE")
+    {
+        //判断，如果urlKeeper中已经有了一个url，则开始分析，
+        //收到一个信息，先把该link在dom中找出来，高亮标注
+        //由用户来点击 开始判断分析 在popup中设置关键词
 
-    chrome.extension.onRequest.addListener(function(dataI) {
-
-        var data = JSON.parse(dataI);
-
-        if(data.kind=="CHECK_response")
+        if(count==0)
         {
-            //readyToCheck = true;
-            checkKeyword(data);
-            //localStorage.UpC_checkerCondition = data;
+            pageUrl = data.pageUrl;
+            urlKeeper[count]={"link":data.link,"obj":""};
+            count++;
+            return;
 
         }
-        else if(data.kind=="ANALYSE")
+        else if(count==1)
         {
-            //判断，如果urlKeeper中已经有了一个url，则开始分析，
-            //收到一个信息，先把该link在dom中找出来，高亮标注
-            //由用户来点击 开始判断分析 在popup中设置关键词
+            urlKeeper[count]={"link":data.link,"obj":""};
+            count++;
 
-            if(count==0)
+            //将选中的link高亮表示
+            //分析两个link，
+            var pageLinks = document.getElementsByTagName("a");
+            var PLC = 0;
+            var UKC = 0;
+            while((pageLinks[PLC]!=undefined )&&(urlKeeper[UKC]!=undefined))
             {
-                pageUrl = data.pageUrl;
-                urlKeeper[count]={"link":data.link,"obj":""};
-                count++;
-                return;
-
-            }
-            else if(count==1)
-            {
-                urlKeeper[count]={"link":data.link,"obj":""};
-                count++;
-
-                //将选中的link高亮表示
-                //分析两个link，
-                var pageLinks = document.getElementsByTagName("a");
-                var PLC = 0;
-                var UKC = 0;
-                while((pageLinks[PLC]!=undefined )&&(urlKeeper[UKC]!=undefined))
+                if(pageLinks[PLC].href==urlKeeper[UKC].link)
                 {
-                    if(pageLinks[PLC].href==urlKeeper[UKC].link)
-                    {
-                        urlKeeper[UKC].obj = pageLinks[PLC];
-                        pageLinks[PLC].style.backgroundColor = "#FFCC80";
-                        UKC++;
-                        PLC = -1;//对下个链接重头开始检索
-                    }
-                    PLC++;
+                    urlKeeper[UKC].obj = pageLinks[PLC];
+                    pageLinks[PLC].style.backgroundColor = "#FFCC80";
+                    UKC++;
+                    PLC = -1;//对下个链接重头开始检索
                 }
-                pageLinks = null;
-                //开始分析
-                var data = analyseW();
-                data["pageUrl"]=pageUrl;
-                //将pageUrl、struct、commonClass 发给background.js 由bg写到localstorage，popup自动加载
-                data["kind"] = "ADD";
-                chrome.extension.sendRequest(JSON.stringify(data));
+                PLC++;
             }
-            else
-            {
-                urlKeeper[count]={"link":data.link,"obj":""};
-                count++;
-            }
+            pageLinks = null;
+            //开始分析
+            var data = analyseW();
+            data["pageUrl"]=pageUrl;
+            //将pageUrl、struct、commonClass 发给background.js 由bg写到localstorage，popup自动加载
+            data["kind"] = "ADD";
+            chrome.extension.sendRequest(JSON.stringify(data));
         }
-        else if(data.kind=="RELOAD")
+        else
         {
-            window.location.reload();
-
+            urlKeeper[count]={"link":data.link,"obj":""};
+            count++;
         }
-        else if(data.kind=="RESET")//重新设置新的关键词或时间
-        {
-            localStorage.removeItem("UpC_checkerCondition");
-            window.location.reload();
-        }
+    }
+    else if(data.kind=="RELOAD")
+    {
+        window.location.reload();
 
-    });
-
-
-
+    }
+    else if(data.kind=="RESET")//重新设置新的关键词或时间
+    {
+        //localStorage.removeItem("UpC_checkerCondition");
+        window.location.reload();
+    }
+//    else if(data.kind=="CLOSE")
+//    {
+//        //localStorage.removeItem("UpC_checkerCondition");
+//        //chrome.tabs.remove(data.tabId);
+//        window.close();
+//    }
 
 });
+//先把接受信息的打开，再发送消息
+//if(localStorage.UpC_checkerCondition==undefined||localStorage.UpC_checkerCondition=="")
+//{
+//    var data = {"pageUrl":pageUrl,"kind":"CHECK"}
+//    chrome.extension.sendRequest(JSON.stringify(data));
+//}
+//else
+//{
+//    //readyToCheck = true;
+//
+//
+//}
+
+
+    chrome.extension.sendRequest(JSON.stringify({"kind":"CHECK","pageUrl":pageUrl}));
+
 //暂时写死，只分析前两个  循环版
 function analyseW()
 {
@@ -150,7 +161,7 @@ function checkKeyword(data)
     var match = {};
     var matchCount = 0;
     var keywords = data.keyword.split(" ");
-    if(keywords.length<2)//该url未设置关键词，匹配个毛线
+    if(data.keyword.replace(/ /g,"")==0)//该url未设置关键词，匹配个毛线
     {
         return;
     }
@@ -167,7 +178,7 @@ function checkKeyword(data)
         for(var k=0;k<keywords.length;k++)//keywords[k]!=""&&typeof keywords[k]!= "undefined")//对每个链接用不同的关键词去匹配
         {
             if(keywords[k]=="")continue;
-            if(linkString.search(keywords[k])>0)//符合关键词要求
+            if(linkString.search(keywords[k])>=0)//符合关键词要求
             {
                 if(links[count].href!=lastNewLink)
                 {
@@ -223,10 +234,14 @@ function checkKeyword(data)
 
     localStorage.UpC_checkerCondition = JSON.stringify(data);
 
+    // 随机等5秒
+    random = Math.ceil(Math.random()*5000);
+    timer = setTimeout("",random);
+
     //计时之后重新载入网页
     var timer = setTimeout(function(){
         window.location.reload();
-    },data.time);
+    },data.time-5);
 
 }
 

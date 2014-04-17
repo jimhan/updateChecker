@@ -19,13 +19,15 @@
         {
             "matches": ["http://*/*"],
             "js": ["js/jquery-2.1.0.js", "js/content.js"],
-            "run_at":"document_start"
+            "run_at":"document_end"
         }
     ],
   "permissions": [
     "background",
     "storage",
     "contextMenus",
-    "http://*/*"
+    "http://*/*",
+     "tabs"
+
   ]
 }

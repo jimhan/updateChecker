@@ -15,7 +15,7 @@ var openWindowsCount = 0;
 //保存检查url和打开窗口id的对应，方便及时重新请求新数据
 var urlToTabId = {};
 
-var countUrl = 0;
+//var countUrl = 0;
 
 if(localStorage.time==undefined||localStorage.time=="")
 {
@@ -44,25 +44,28 @@ document.addEventListener('DOMContentLoaded', function (){
         if((data.kind=="CHECK")&&(localStorage.status=="start"))//待检查页面的初始化
         {
             var pageUrl = data.pageUrl;
+
             if(localStorage.totalUrl.indexOf(pageUrl)>=0)
             {
-                var urlList = JSON.parse(localStorage.urlList);
-                var response = urlList[pageUrl];
-                response["time"] = localStorage.time;
-                response["kind"] = "CHECK_response";
-                //把数据发回去
-                chrome.tabs.sendRequest(sender.tab.id, JSON.stringify(response));
+                //非插件打开的网页，所请求的信息一概不回
+                if((urlToTabId[pageUrl])==(sender.tab.id))
+                {
+                    var urlList = JSON.parse(localStorage.urlList);
+                    var response = urlList[pageUrl];
+                    response["time"] = localStorage.time;
+                    response["kind"] = "CHECK_response";
+                    //把数据发回去
+                    chrome.tabs.sendRequest(sender.tab.id, JSON.stringify(response));
+//                openWindows[openWindowsCount] = sender.tab.id;
+//                openWindowsCount++;
 
-                openWindows[openWindowsCount] = sender.tab.id;
-                openWindowsCount++;
-
+                }
             }
 
         }
         else if(data.kind=="ADD")
         {
             addUrl(data);
-
         }
         else if(data.kind=="ADDMATCH")
         {
@@ -83,44 +86,12 @@ document.addEventListener('DOMContentLoaded', function (){
             chrome.browserAction.setBadgeText({"text":localStorage.matchCount});
 
         }
-
-
-
-
-
     });
-
-
-
-
 });
-
-//test
-
-
 
 
 //////////////////////////////////分割----下面是方法的定义//////////////
 
-//获取前台页面
-function getFrontPage()
-{
-    var viewTabUrl = chrome.extension.getURL('main.html');
-    // Look through all the pages in this extension to find one we can use.
-    var views = chrome.extension.getViews();
-    for (var i = 0; i < views.length; i++) {
-        var view = views[i];
-        // If this view has the right URL and hasn't been used yet...
-        if (view.location.href == viewTabUrl) {
-
-            // ...call one of its functions and set a property.
-
-            //break; // we're done
-            return view;
-        }
-    }
-    return null;
-}
 
 
 function startLook()
@@ -133,6 +104,7 @@ function startLook()
 
     var totalUrl = localStorage.totalUrl.split(",")
     var count = 0;
+    var timer = null;
     while(totalUrl[count]!=""&&totalUrl[count]!=undefined)
     {
         //var tempWindow = window.open(totalUrl[count],totalUrl[count]);
@@ -141,16 +113,26 @@ function startLook()
 //        openWindowsCount++;
         //tempWindow = null;
         var pageUrl = totalUrl[count];
-        chrome.tabs.create({"url":pageUrl},function(tab){
-
+        chrome.tabs.create({"active":false,"url":pageUrl},function(tab){
 
             openWindows[openWindowsCount] = tab.id;
+            console.log("back_"+tab.id);
             openWindowsCount++;
-            urlToTabId[pageUrl] = tab.id;
+            var tabUrl = tab.url;
+            if(urlToTabId[tabUrl]==undefined)
+            {
+                console.log(tab.url+":"+tab.id+";");
+                urlToTabId[tabUrl]=tab.id;
+            }
 
         });
+
+
+
         count++;
 
+        //随机暂停1秒内
+        timer = setTimeout("",Math.ceil(Math.random()*1000));
 
     }
 
@@ -184,10 +166,10 @@ function stopLook()
 //        var tempWindow = openWindows[i];
 //        tempWindow.close();
 //        tempWindow = null;
+        //temp
         chrome.tabs.remove(openWindows[i]);
-
-
-
+        console.log("close tab id:"+openWindows[i]);
+        //chrome.tabs.sendRequest(openWindows[i], JSON.stringify({"kind":"CLOSE"}));
     }
 
 
@@ -237,8 +219,6 @@ function addUrl(data)
     }
 
     //window.location.reload(); 等设置好关键词再reload
-
-
 }
 
 function set(data)//设置关键词和抓取时间间隔
@@ -250,8 +230,9 @@ function set(data)//设置关键词和抓取时间间隔
     if(time!=localStorage.time)
     {
         totalReload = true;
+        localStorage.time = time;
     }
-    localStorage.time = time;
+
     //localStorage.checkWhenOpen = data["checkWhenOpen"];
 
     var count = 0;
@@ -304,24 +285,30 @@ function set(data)//设置关键词和抓取时间间隔
         else if(count>0)
         {
             // 打开窗口或新建窗口
-            var pageUrl = data[count].pageUrl;
-            var newCount = 0;
-            if(urlToTabId[pageUrl]!=undefined)
+            var count = 0;
+            while(data[count]!=undefined)
             {
-                // 取tabId 重载
-                chrome.tabs.sendRequest(urlToTabId[pageUrl], JSON.stringify({"kind":"RESET"}));
-            }
-            else
-            {
-                // 新建
-                chrome.tabs.create({"url":pageUrl},function(tab){
+                var pageUrl = data[count].pageUrl;
 
-                    openWindows[openWindowsCount] = tab.id;
-                    openWindowsCount++;
-                    urlToTabId[pageUrl] = tab.id;
+                if(urlToTabId[pageUrl]!=undefined)
+                {
+                    // 取tabId 重载
+                    chrome.tabs.sendRequest(urlToTabId[pageUrl], JSON.stringify({"kind":"RESET"}));
+                }
+                else
+                {
+                    // 新建
+                    chrome.tabs.create({"url":pageUrl},function(tab){
 
-                });
+                        openWindows[openWindowsCount] = tab.id;
+                        openWindowsCount++;
+                        var pageUrl = tab.url;
+                        if(urlToTabId[pageUrl]==undefined)urlToTabId[pageUrl] = tab.id;
 
+                    });
+
+                }
+                count++;
             }
         }
     }
@@ -329,8 +316,6 @@ function set(data)//设置关键词和抓取时间间隔
 
 
 }
-
-
 
 function addUrlToCheck(info,tab)
 {
@@ -346,11 +331,11 @@ function clearMatch()
     chrome.browserAction.setBadgeText({"text":""});
 }
 
-function deleteData(kind,id)
+function deleteData(kind,id)//id为pageUrl
 {
     if(kind=="ONEURL")
     {
-        //id为pageUrl
+
         var urlList = JSON.parse(localStorage.urlList);
 
         urlList[id] = undefined;
@@ -374,7 +359,7 @@ function deleteData(kind,id)
 
         }
         localStorage.totalUrl = newTotalUrl;
-
+        urlToTabId[id]=undefined;
     }
 
 }
@@ -387,7 +372,6 @@ function setLinkClicked(id)
 
 //    if(localStorage.matchCount==0)chrome.browserAction.setBadgeText({"text":""});
 //    else chrome.browserAction.setBadgeText({"text":localStorage.matchCount});
-
 }
 
 //
@@ -475,4 +459,24 @@ function setLinkClicked(id)
 //
 //    }
 //
+//}
+
+//获取前台页面
+//function getFrontPage()
+//{
+//    var viewTabUrl = chrome.extension.getURL('main.html');
+//    // Look through all the pages in this extension to find one we can use.
+//    var views = chrome.extension.getViews();
+//    for (var i = 0; i < views.length; i++) {
+//        var view = views[i];
+//        // If this view has the right URL and hasn't been used yet...
+//        if (view.location.href == viewTabUrl) {
+//
+//            // ...call one of its functions and set a property.
+//
+//            //break; // we're done
+//            return view;
+//        }
+//    }
+//    return null;
 //}
