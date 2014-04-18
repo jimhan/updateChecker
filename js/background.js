@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function (){
         }
         else if(data.kind=="ADD")
         {
-            addUrl(data);
+            addUrl(data,sender.tab.id);
         }
         else if(data.kind=="ADDMATCH")
         {
@@ -98,8 +98,8 @@ function startLook()
 {
     //if(localStorage.status=="start")return;
 
-    //todo
-    //如果已经打开该页面了，是否还要再打开，如何才能不打开
+    //todo 如果已经打开该页面了，是否还要再打开，如何才能不打开
+
 
 
     var totalUrl = localStorage.totalUrl.split(",")
@@ -180,7 +180,7 @@ function stopLook()
 
 }
 
-function addUrl(data)
+function addUrl(data,tabId)
 {
     var pageUrl = data.pageUrl+"";
     var commonClass = data.commonClass;
@@ -196,6 +196,7 @@ function addUrl(data)
         localStorage.matchCount = 0;
         localStorage.match = JSON.stringify({});
         //localStorage.checkWhenOpen = false;
+
 
     }
     else//在原有的基础上增加
@@ -217,6 +218,14 @@ function addUrl(data)
         }
 
     }
+
+    if((localStorage.status=="start")&&(urlToTabId[pageUrl]==undefined))//新添加的的url，还未设置关键词
+    {
+        openWindows[openWindowsCount] = tabId;
+        openWindowsCount++;
+        urlToTabId[pageUrl] = tabId;
+    }
+
 
     //window.location.reload(); 等设置好关键词再reload
 }
@@ -331,14 +340,14 @@ function clearMatch()
     chrome.browserAction.setBadgeText({"text":""});
 }
 
-function deleteData(kind,id)//id为pageUrl
+function deleteData(kind,pageUrl)
 {
     if(kind=="ONEURL")
     {
 
         var urlList = JSON.parse(localStorage.urlList);
 
-        urlList[id] = undefined;
+        urlList[pageUrl] = undefined;
         //urlList.splice(id,1);
         localStorage.urlList = JSON.stringify(urlList);
 
@@ -347,7 +356,7 @@ function deleteData(kind,id)//id为pageUrl
         var count = 0;
         while(totalUrl[count]!=""&&totalUrl[count]!=undefined)
         {
-            if(totalUrl[count]!=id)
+            if(totalUrl[count]!=pageUrl)
             {
                 newTotalUrl = totalUrl[count]+","+newTotalUrl;
                 count++;
@@ -359,7 +368,7 @@ function deleteData(kind,id)//id为pageUrl
 
         }
         localStorage.totalUrl = newTotalUrl;
-        urlToTabId[id]=undefined;
+        urlToTabId[pageUrl]=undefined;
     }
 
 }

@@ -148,6 +148,7 @@ function analyseW()
     {
         commonClass = commonClass.split(" ")[0];
     }
+    urlKeeper = {};
     return {"struct":struct,"commonClass":commonClass};
 
 }
