@@ -26,7 +26,7 @@
       <file leaf-file-name="background.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/background.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="0" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="391">
+            <state line="6" column="60" selection-start="215" selection-end="215" vertical-scroll-proportion="-3.9230769" vertical-offset="0" max-vertical-offset="408">
               <folding />
             </state>
           </provider>
@@ -41,11 +41,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="main.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="104" column="84" selection-start="3230" selection-end="3230" vertical-scroll-proportion="0.0" vertical-offset="1375" max-vertical-offset="2414">
-              <folding />
+            <state line="19" column="6" selection-start="618" selection-end="618" vertical-scroll-proportion="0.42222223" vertical-offset="0" max-vertical-offset="2448">
+              <folding>
+                <element signature="n#style#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -53,16 +56,16 @@
       <file leaf-file-name="main.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="67" column="58" selection-start="2267" selection-end="2267" vertical-scroll-proportion="0.0" vertical-offset="1122" max-vertical-offset="3349">
+            <state line="67" column="58" selection-start="2267" selection-end="2267" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3349">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="background.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="background.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/background.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="371" column="4" selection-start="9633" selection-end="9633" vertical-scroll-proportion="0.924183" vertical-offset="5600" max-vertical-offset="8432">
+            <state line="25" column="1" selection-start="406" selection-end="406" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8432">
               <folding />
             </state>
           </provider>
@@ -71,7 +74,7 @@
       <file leaf-file-name="content.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/content.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="116" column="85" selection-start="2778" selection-end="2778" vertical-scroll-proportion="0.0" vertical-offset="3377" max-vertical-offset="5253">
+            <state line="24" column="56" selection-start="330" selection-end="330" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5253">
               <folding />
             </state>
           </provider>
@@ -90,13 +93,13 @@
         <option value="$PROJECT_DIR$/js/jquery.min.js" />
         <option value="$PROJECT_DIR$/js/jquery-2.1.0.js" />
         <option value="$PROJECT_DIR$/js/jquery-1.5.js" />
-        <option value="$PROJECT_DIR$/background.html" />
         <option value="$PROJECT_DIR$/tsetGet.html" />
         <option value="$PROJECT_DIR$/js/main.js" />
-        <option value="$PROJECT_DIR$/main.html" />
         <option value="$PROJECT_DIR$/manifest.json" />
         <option value="$PROJECT_DIR$/js/content.js" />
         <option value="$PROJECT_DIR$/js/background.js" />
+        <option value="$PROJECT_DIR$/background.html" />
+        <option value="$PROJECT_DIR$/main.html" />
       </list>
     </option>
   </component>
@@ -202,6 +205,14 @@
     <property name="DefaultHtmlFileTemplate" value="Html5" />
   </component>
   <component name="RunManager">
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
+      <method />
+    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -212,23 +223,15 @@
       <option name="showConsoleOnStdOut" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
-      <envs />
-      <method />
-    </configuration>
     <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
       <setting name="configLocationType" value="CONFIG_FILE" />
       <setting name="settingsFile" value="" />
       <setting name="serverType" value="INTERNAL" />
       <setting name="preferredDebugBrowser" value="CHROME" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
@@ -287,7 +290,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1680" height="939" extended-state="0" />
+    <frame x="0" y="22" width="1680" height="939" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -333,7 +336,10 @@
     <entry file="file://$PROJECT_DIR$/main.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="104" column="84" selection-start="3230" selection-end="3230" vertical-scroll-proportion="0.0" vertical-offset="1375" max-vertical-offset="2414">
-          <folding />
+          <folding>
+            <element signature="n#style#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -394,13 +400,6 @@
         <state line="174" column="0" selection-start="3226" selection-end="3226" vertical-scroll-proportion="0.68790495" vertical-offset="2321" max-vertical-offset="3247" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="84" selection-start="3230" selection-end="3230" vertical-scroll-proportion="0.0" vertical-offset="1375" max-vertical-offset="2414">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/manifest.json">
       <provider selected="true" editor-type-id="text-editor">
         <state line="29" column="5" selection-start="655" selection-end="655" vertical-scroll-proportion="0.0" vertical-offset="493" max-vertical-offset="646">
@@ -410,7 +409,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/background.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="272" selection-end="272" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="391">
+        <state line="6" column="60" selection-start="215" selection-end="215" vertical-scroll-proportion="-3.9230769" vertical-offset="0" max-vertical-offset="408">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/content.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="56" selection-start="330" selection-end="330" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5253">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/background.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="1" selection-start="406" selection-end="406" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8432">
           <folding />
         </state>
       </provider>
@@ -422,17 +435,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/content.js">
+    <entry file="file://$PROJECT_DIR$/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="116" column="85" selection-start="2778" selection-end="2778" vertical-scroll-proportion="0.0" vertical-offset="3377" max-vertical-offset="5253">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/background.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="371" column="4" selection-start="9633" selection-end="9633" vertical-scroll-proportion="0.924183" vertical-offset="5600" max-vertical-offset="8432">
-          <folding />
+        <state line="19" column="6" selection-start="618" selection-end="618" vertical-scroll-proportion="0.42222223" vertical-offset="0" max-vertical-offset="2448">
+          <folding>
+            <element signature="n#style#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
