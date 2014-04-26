@@ -20,6 +20,11 @@
             "matches": ["http://*/*"],
             "js": ["js/jquery-2.1.0.js", "js/content.js"],
             "run_at":"document_end"
+        },
+        {
+            "matches": ["http://*/*"],
+            "js": ["js/test.js"],
+            "run_at":"document_start"
         }
     ],
   "permissions": [
@@ -27,7 +32,12 @@
     "storage",
     "contextMenus",
     "http://*/*",
-     "tabs"
+    "tabs",
+    "notifications"
 
+  ],
+  "web_accessible_resources": [
+      "image/icon.png"
   ]
+
 }

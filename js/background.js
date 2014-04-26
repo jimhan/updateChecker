@@ -1,13 +1,4 @@
 
-
-// var lastDate = new Date();
-// lastDate.setDate(2013,12,15);
-//上次抓取的日期时间还是放到localStorage里好
-//
-
-//var today = new Date();
-
-
 //保存打开的检查窗口的tabId
 var openWindows = {};
 var openWindowsCount = 0;
@@ -85,6 +76,11 @@ document.addEventListener('DOMContentLoaded', function (){
             localStorage.urlList = JSON.stringify(urlList);
             chrome.browserAction.setBadgeText({"text":localStorage.matchCount});
 
+            //如果桌面提醒为真，则弹出提醒
+            if(localStorage.desktopAlert=="true")desktopAlert(data);
+
+
+
         }
     });
 });
@@ -98,13 +94,52 @@ function startLook()
 {
     //if(localStorage.status=="start")return;
 
-    //todo 如果已经打开该页面了，是否还要再打开，如何才能不打开
-
-
+    //如果已经打开该页面了，是否还要再打开，如何才能不打开
 
     var totalUrl = localStorage.totalUrl.split(",")
     var count = 0;
     var timer = null;
+
+    //todo 检查urlToTabId中是否有的标签被关掉了，有则重新打开，如果都在则什么都不做
+    if(localStorage.status=="start")
+    {
+//        for(var i=0;i<totalUrl.length;i++)
+//        {
+//            var url = totalUrl[i];
+//            if(urlToTabId[url]!=undefined)
+//            {
+//                //检查是否被关掉了
+//                var tabId = urlToTabId[url];
+//                var test = chrome.tabs.get(tabId,function(tab){
+//
+//                    if(tab==undefined)
+//                    {
+////                        chrome.tabs.create({"active":false,"url":url},function(tab){
+////                            openWindows[openWindowsCount] = tab.id;
+////                            //console.log("back_"+tab.id);
+////                            openWindowsCount++;
+////                            urlToTabId[tab.url]=tab.id;
+////                        });
+//
+//                        console.log(tabId+"error");
+//
+//                    }
+//
+//                    console.log("tabId+"+tab.id);
+//
+//                });
+//
+//
+//            }
+//
+//
+//
+//        }
+//        return;
+        stopLook();
+
+    }
+
     while(totalUrl[count]!=""&&totalUrl[count]!=undefined)
     {
         //var tempWindow = window.open(totalUrl[count],totalUrl[count]);
@@ -127,10 +162,7 @@ function startLook()
 
         });
 
-
-
         count++;
-
         //随机暂停1秒内
         timer = setTimeout("",Math.ceil(Math.random()*1000));
 
@@ -171,9 +203,6 @@ function stopLook()
         console.log("close tab id:"+openWindows[i]);
         //chrome.tabs.sendRequest(openWindows[i], JSON.stringify({"kind":"CLOSE"}));
     }
-
-
-
     openWindows = {};
     openWindowsCount = 0;
     urlToTabId = {};
@@ -195,6 +224,7 @@ function addUrl(data,tabId)
         localStorage.totalUrl = pageUrl+",";
         localStorage.matchCount = 0;
         localStorage.match = JSON.stringify({});
+        localStorage.desktopAlert = "false";
         //localStorage.checkWhenOpen = false;
 
 
@@ -382,6 +412,21 @@ function setLinkClicked(id)
 //    if(localStorage.matchCount==0)chrome.browserAction.setBadgeText({"text":""});
 //    else chrome.browserAction.setBadgeText({"text":localStorage.matchCount});
 }
+
+function desktopAlert(data)
+{
+
+    var notification = webkitNotifications.createNotification(
+        'image/icon.png',  // 图标 URL，可以是相对路径
+        '新找到了 '+data.count+' 个链接',  // 通知标题
+        '最新的链接匹配 '+data[0].keyword // 通知正文文本
+    );
+
+    notification.show();
+}
+
+
+
 
 //
 //function lookFor()

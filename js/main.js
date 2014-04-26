@@ -13,6 +13,13 @@ document.addEventListener('DOMContentLoaded', function (){
     else if(localStorage.status=="stop")$("#status").text("已停止");
     $("#time").val(localStorage.time/60000);
 
+    if(localStorage.desktopAlert=="true")
+    {
+        $("#desktopAlert").attr("checked","checked");
+        $("#desktopAlert").attr("keeper","true");
+    }
+
+    urlToDelete = [];
 
     //加载添加到检查页面的url和关键词
     if(localStorage.urlList != undefined)
@@ -96,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function (){
     });
 
     $("#set").click(function(){
-        $("#setStatus").empty();
+
         var timeMin = $("#time").val();
 
         if(timeMin<1)
@@ -117,6 +124,23 @@ document.addEventListener('DOMContentLoaded', function (){
             return;
         }
 
+        //检查桌面开启按钮是否有变化
+        var desktopAlert = document.getElementById("desktopAlert").checked+"";
+        if(desktopAlert!=($("#desktopAlert").attr("keeper")))
+        {
+            localStorage.desktopAlert = desktopAlert;
+        }
+
+        //检查是否删除了要检查的url
+        if(urlToDelete.length>0)
+        {
+            for(var i=0;i<urlToDelete.length;i++)
+            {
+                backGround.deleteData("ONEURL",urlToDelete[i]);
+            }
+
+        }
+
         // 检查有哪个产生了变化，再发送
         var k = 0;
         for(var i=0;i<count;i++)
@@ -131,9 +155,7 @@ document.addEventListener('DOMContentLoaded', function (){
 
         }
 
-
         backGround.set(data);
-
 
         $("#alertS").empty();
         var date = new Date();
@@ -160,10 +182,23 @@ document.addEventListener('DOMContentLoaded', function (){
     $("#setKeyword li p input").click(function(){
 
         var url = $(this).parent().text();
-        backGround.deleteData("ONEURL",url);
+        var count = urlToDelete.length;
+        urlToDelete[count] = url;
+        //backGround.deleteData("ONEURL",url);
         $(this).parent().parent("li").remove();
 
     });
+
+    //即时设置 是否桌面提醒
+//    $("#desktopAlert").click(function(){
+//
+//        var judge = document.getElementById("desktopAlert").checked+"";
+//
+//        //var judge = $("#desktopAlert").attr("checked")+"";
+//        if(judge=="true")localStorage.desktopAlert="true";
+//        else localStorage.desktopAlert = "false";
+//
+//    });
 
 
 

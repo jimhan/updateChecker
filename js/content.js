@@ -14,14 +14,6 @@ var timer;
 var random;
 
 
-//document.addEventListener('DOMContentLoaded', function (){
-//
-//
-//
-//
-//
-//});
-
 chrome.extension.onRequest.addListener(function(dataI) {
 
     var data = JSON.parse(dataI);
@@ -82,14 +74,10 @@ chrome.extension.onRequest.addListener(function(dataI) {
             count++;
         }
     }
-    else if(data.kind=="RELOAD")
-    {
-        window.location.reload();
-
-    }
     else if(data.kind=="RESET")//重新设置新的关键词或时间
     {
         //localStorage.removeItem("UpC_checkerCondition");
+
         window.location.reload();
     }
 //    else if(data.kind=="CLOSE")
